@@ -4,6 +4,7 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/critters',
     '@nuxtjs/html-validator',
+    '@nuxtjs/i18n',
     '@nuxtjs/tailwindcss',
     'nuxt-icon',
   ],
@@ -28,4 +29,23 @@ export default defineNuxtConfig({
       },
     },
   },
+  // i18n: {
+  //   locales: [
+  //     {
+  //       code: 'de',
+  //       file: 'de-DE.json',
+  //     },
+  //     {
+  //       code: 'en',
+  //       file: 'en-GB.json',
+  //     },
+  //     {
+  //       code: 'ko',
+  //       file: 'ko-KR.json',
+  //     },
+  //   ],
+  //   lazy: true,
+  //   langDir: 'lang',
+  //   defaultLocale: 'en',
+  // },
 })
