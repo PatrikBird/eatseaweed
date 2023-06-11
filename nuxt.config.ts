@@ -34,27 +34,28 @@ export default defineNuxtConfig({
       useCookie: true,
       cookieKey: 'i18n_redirected',
       redirectOn: 'root',
+      alwaysRedirect: true,
     },
-    strategy: 'prefix_and_default',
+    // strategy: 'prefix_and_default',
+    strategy: 'no_prefix',
+    locales: [
+      {
+        code: 'de',
+        name: 'Deutsch',
+        file: 'de-DE.json',
+      },
+      {
+        code: 'en',
+        name: 'English',
+        file: 'en-GB.json',
+      },
+      {
+        code: 'ko',
+        name: '한국어',
+        file: 'ko-KR.json',
+      },
+    ],
     defaultLocale: 'en',
+    //   lazy: true,
   },
-  // i18n: {
-  //   locales: [
-  //     {
-  //       code: 'de',
-  //       file: 'de-DE.json',
-  //     },
-  //     {
-  //       code: 'en',
-  //       file: 'en-GB.json',
-  //     },
-  //     {
-  //       code: 'ko',
-  //       file: 'ko-KR.json',
-  //     },
-  //   ],
-  //   lazy: true,
-  //   langDir: 'lang',
-  //   defaultLocale: 'en',
-  // },
 })
