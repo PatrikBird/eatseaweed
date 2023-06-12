@@ -7,6 +7,7 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     '@nuxtjs/tailwindcss',
     'nuxt-icon',
+    '@vueuse/motion/nuxt',
   ],
   app: {
     head: {
@@ -57,5 +58,24 @@ export default defineNuxtConfig({
     ],
     defaultLocale: 'en',
     //   lazy: true,
+  },
+  runtimeConfig: {
+    public: {},
+  },
+  motion: {
+    directives: {
+      'pop-bottom': {
+        initial: {
+          scale: 0,
+          opacity: 0,
+          y: 100,
+        },
+        visible: {
+          scale: 1,
+          opacity: 1,
+          y: 0,
+        },
+      },
+    },
   },
 })

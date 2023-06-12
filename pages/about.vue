@@ -1,3 +1,5 @@
 <template>
-  <p>{{ $t('welcome') }} about</p>
+  <div v-motion-fade>
+    <p>{{ $t('welcome') }} about</p>
+  </div>
 </template>
