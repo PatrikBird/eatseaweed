@@ -15,9 +15,12 @@ export default defineNuxtConfig({
       meta: [
         { name: 'description', content: '' },
       ],
-      // set lang attributes for fallback pages
       htmlAttrs: {
-        lang: 'en',
+        lang: 'en', // set lang attributes for fallback pages
+
+      },
+      bodyAttrs: {
+        style: 'padding-top: 4rem', // 4rem == height of navbar
       },
     },
   },
