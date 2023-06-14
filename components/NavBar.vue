@@ -64,14 +64,13 @@ const languageName = computed(() => languageMapping[currentLanguage.value as Lan
           <ul class="py-2 font-medium" role="none">
             <li v-for="lang in languageMapping" :key="lang.name">
               <button
+                type="button"
                 class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
                 role="menuitem"
                 @click="onChange(lang.locale)"
               >
-                <div class="inline-flex items-center">
-                  <Icon :name="lang.flag" class="mr-2 h-5 w-5" />
-                  {{ lang.name }}
-                </div>
+                <Icon :name="lang.flag" class="mr-2 h-5 w-5" />
+                {{ lang.name }}
               </button>
             </li>
           </ul>
