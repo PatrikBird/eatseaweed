@@ -1,11 +1,11 @@
 <script setup lang='ts'>
-const { scrollUp } = useScrollDirection()
+const { showNavigation } = useShowControls()
 </script>
 
 <template>
   <nav
     class="fixed inset-x-0 top-0 flex h-16 bg-white transition-transform duration-700 dark:bg-gray-900"
-    :class="!scrollUp && 'transform -translate-y-full'"
+    :class="!showNavigation && 'transform -translate-y-full'"
   >
     <div class="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
       <a href="https://flowbite.com/" class="flex items-center">
