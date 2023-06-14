@@ -6,8 +6,16 @@ module.exports = {
   darkMode: 'class',
   plugins: [
     require('@tailwindcss/typography'),
+    require('flowbite/plugin'),
   ],
-  content: ['content/**/*.{md,yml,json,json5,csv}'],
+  content: [
+    './components/**/*.{js,vue,ts}',
+    './layouts/**/*.vue',
+    './pages/**/*.vue',
+    './plugins/**/*.{js,ts}',
+    './nuxt.config.{js,ts}',
+    './node_modules/flowbite.{js,ts}',
+  ],
   theme: {
     extend: {
       fontFamily: {
