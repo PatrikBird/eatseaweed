@@ -1,11 +1,43 @@
 <script setup lang='ts'>
 import { initFlowbite } from 'flowbite'
 
+type LanguageKeys = 'en' | 'de' | 'ko'
+
 onMounted(() => {
   initFlowbite()
 })
 
 const { showNavigation } = useShowControls()
+const { locale, setLocale, setLocaleCookie } = useI18n()
+
+async function onChange(locale: string) {
+  await setLocale(locale)
+  setLocaleCookie(locale)
+  const dropdownToggle = document.querySelector('[data-dropdown-toggle="language-dropdown-menu"]')
+  if (dropdownToggle)
+    (dropdownToggle as HTMLElement).click()
+}
+
+const currentLanguage = computed(() => locale.value as LanguageKeys)
+const languageMapping: Record<LanguageKeys, { flag: string; name: string; locale: string }> = {
+  en: {
+    flag: 'emojione:flag-for-united-kingdom',
+    name: 'English',
+    locale: 'en',
+  },
+  de: {
+    flag: 'emojione:flag-for-germany',
+    name: 'Deutsch',
+    locale: 'de',
+  },
+  ko: {
+    flag: 'emojione:flag-for-south-korea',
+    name: '한국어',
+    locale: 'ko',
+  },
+}
+const flagIcon = computed(() => languageMapping[currentLanguage.value as LanguageKeys].flag)
+const languageName = computed(() => languageMapping[currentLanguage.value as LanguageKeys].name)
 </script>
 
 <template>
@@ -24,47 +56,23 @@ const { showNavigation } = useShowControls()
           data-dropdown-toggle="language-dropdown-menu"
           class="inline-flex cursor-pointer items-center justify-center rounded-lg px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white"
         >
-          <Icon name="emojione:flag-for-united-kingdom" class="mr-2 h-5 w-5" />
-          English
+          <Icon :name="flagIcon" class="mr-2 h-5 w-5" />
+          {{ languageName }}
         </button>
         <!-- Dropdown -->
         <div id="language-dropdown-menu" class="z-50 my-4 hidden list-none divide-y divide-gray-100 rounded-lg bg-white text-base shadow dark:bg-gray-700">
           <ul class="py-2 font-medium" role="none">
-            <li>
-              <a
-                href="#"
-                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
+            <li v-for="lang in languageMapping" :key="lang.name">
+              <button
+                class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
                 role="menuitem"
+                @click="onChange(lang.locale)"
               >
                 <div class="inline-flex items-center">
-                  <Icon name="emojione:flag-for-united-kingdom" class="mr-2 h-5 w-5" />
-                  English
+                  <Icon :name="lang.flag" class="mr-2 h-5 w-5" />
+                  {{ lang.name }}
                 </div>
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
-                role="menuitem"
-              >
-                <div class="inline-flex items-center">
-                  <Icon name="emojione:flag-for-germany" class="mr-2 h-5 w-5" />
-                  Deutsch
-                </div>
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
-                role="menuitem"
-              >
-                <div class="inline-flex items-center">
-                  <Icon name="emojione:flag-for-south-korea" class="mr-2 h-5 w-5" />
-                  한국어
-                </div>
-              </a>
+              </button>
             </li>
           </ul>
         </div>
@@ -85,12 +93,12 @@ const { showNavigation } = useShowControls()
       >
         <ul class="mt-4 flex flex-col rounded-lg border border-gray-100 bg-gray-50 p-4 font-medium dark:border-gray-700 dark:bg-gray-800 md:mt-0 md:flex-row md:space-x-8 md:border-0 md:bg-white md:p-0 md:dark:bg-gray-900">
           <li>
-            <a
-              href="#"
+            <NuxtLink
+              to="/"
               class="block rounded bg-blue-700 py-2 pl-3 pr-4 text-white md:bg-transparent md:p-0 md:text-blue-700 md:dark:text-blue-500" aria-current="page"
             >
               Home
-            </a>
+            </NuxtLink>
           </li>
           <li>
             <a
