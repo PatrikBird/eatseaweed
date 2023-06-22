@@ -1,11 +1,7 @@
-<script setup lang='ts'>
-import { initFlowbite } from 'flowbite'
+<script setup lang="ts">
+import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 
 type LanguageKeys = 'en' | 'de' | 'ko'
-
-onMounted(() => {
-  initFlowbite()
-})
 
 const { showNavigation } = useShowControls()
 const { locale, setLocale, setLocaleCookie } = useI18n()
@@ -13,9 +9,6 @@ const { locale, setLocale, setLocaleCookie } = useI18n()
 async function onChange(locale: string) {
   await setLocale(locale)
   setLocaleCookie(locale)
-  const dropdownToggle = document.querySelector('[data-dropdown-toggle="language-dropdown-menu"]')
-  if (dropdownToggle)
-    (dropdownToggle as HTMLElement).click()
 }
 
 const currentLanguage = computed(() => locale.value as LanguageKeys)
@@ -37,86 +30,113 @@ const languageMapping: Record<LanguageKeys, { flag: string; name: string; locale
   },
 }
 const flagIcon = computed(() => languageMapping[currentLanguage.value as LanguageKeys].flag)
-const languageName = computed(() => languageMapping[currentLanguage.value as LanguageKeys].name)
 </script>
 
 <template>
-  <nav
-    class="fixed inset-x-0 top-0 flex h-16 bg-white transition-transform duration-700 dark:bg-gray-900"
+  <Disclosure
+    v-slot="{ open }" as="nav"
+    class="fixed inset-x-0 top-0 bg-white transition-transform duration-700"
     :class="!showNavigation && 'transform -translate-y-full'"
   >
-    <div class="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
-      <a href="#" class="flex items-center">
-        <img src="https://flowbite.com/docs/images/logo.svg" class="mr-3 h-8" alt="Flowbite Logo">
-        <span class="self-center whitespace-nowrap pr-9 text-2xl font-semibold dark:text-white">Eat Seaweed</span>
-      </a>
-      <div class="flex items-center md:order-2 md:pl-4">
-        <button
-          type="button"
-          data-dropdown-toggle="language-dropdown-menu"
-          class="inline-flex cursor-pointer items-center justify-center rounded-lg px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white"
-        >
-          <Icon :name="flagIcon" class="mr-2 h-5 w-5" />
-          {{ languageName }}
-        </button>
-        <!-- Dropdown -->
-        <div id="language-dropdown-menu" class="z-50 my-4 hidden list-none divide-y divide-gray-100 rounded-lg bg-white text-base shadow dark:bg-gray-700">
-          <ul class="py-2 font-medium" role="none">
-            <li v-for="lang in languageMapping" :key="lang.name">
-              <button
-                type="button"
-                class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
-                role="menuitem"
-                @click="onChange(lang.locale)"
-              >
-                <Icon :name="lang.flag" class="mr-2 h-5 w-5" />
-                {{ lang.name }}
-              </button>
-            </li>
-          </ul>
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex h-16 justify-between">
+        <div class="flex">
+          <div class="flex shrink-0 items-center">
+            <img class="block h-8 w-auto lg:hidden" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company">
+            <img class="hidden h-8 w-auto lg:block" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company">
+          </div>
+          <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+            <!-- Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" -->
+            <a href="#" class="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900">Dashboard</a>
+            <a href="#" class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">Team</a>
+            <a href="#" class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">Projects</a>
+            <a href="#" class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">Calendar</a>
+          </div>
         </div>
-        <button
-          data-collapse-toggle="mobile-menu-language-select"
-          type="button"
-          class="ml-1 inline-flex items-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 md:hidden"
-          aria-controls="mobile-menu-language-select"
-          aria-expanded="false"
-        >
-          <span class="sr-only">Open main menu</span>
-          <svg class="h-6 w-6" fill="currentColor" aria-hidden="true" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" /></svg>
-        </button>
-      </div>
-      <div
-        id="mobile-menu-language-select"
-        class="hidden w-full items-center justify-between md:order-1 md:flex md:w-auto"
-      >
-        <ul class="mt-4 flex flex-col rounded-lg border border-gray-100 bg-gray-50 p-4 font-medium dark:border-gray-700 dark:bg-gray-800 md:mt-0 md:flex-row md:space-x-8 md:border-0 md:bg-white md:p-0 md:dark:bg-gray-900">
-          <li>
-            <NuxtLink
-              to="/"
-              class="block rounded bg-blue-700 py-2 pl-3 pr-4 text-white md:bg-transparent md:p-0 md:text-blue-700 md:dark:text-blue-500" aria-current="page"
-            >
-              Home
-            </NuxtLink>
-          </li>
-          <li>
-            <a
-              href="#"
-              class="block rounded py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:p-0 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
-            >
-              About
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              class="block rounded py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:p-0 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
-            >
-              Contact
-            </a>
-          </li>
-        </ul>
+        <div class="flex gap-5">
+          <div class="ml-6 flex items-center">
+            <!-- Language dropdown -->
+            <Menu as="div" class="relative ml-3">
+              <div>
+                <MenuButton class="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                  <span class="sr-only">Open language menu</span>
+                  <Icon :name="flagIcon" class="h-6 w-6" />
+                </MenuButton>
+              </div>
+              <transition enter-active-class="transition ease-out duration-200" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
+                <MenuItems class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none">
+                  <MenuItem v-for="lang in languageMapping" :key="lang.name" v-slot="{ active }" as="div">
+                    <button
+                      type="button"
+                      class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
+                      @click="onChange(lang.locale)"
+                    >
+                      <Icon :name="lang.flag" class="mr-2 h-5 w-5" />
+                      {{ lang.name }}
+                    </button>
+                  </MenuItem>
+                </MenuItems>
+              </transition>
+            </Menu>
+          </div>
+          <div class="-mr-2 flex items-center sm:hidden">
+            <!-- Mobile menu button -->
+            <DisclosureButton class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+              <span class="sr-only">Open main menu</span>
+              <Icon v-if="!open" name="radix-icons:hamburger-menu" class="block h-6 w-6" />
+              <Icon v-else name="radix-icons:cross-1" class="block h-6 w-6" />
+            </DisclosureButton>
+          </div>
+        </div>
       </div>
     </div>
-  </nav>
+
+    <DisclosurePanel class="sm:hidden">
+      <div class="space-y-1 pb-3 pt-2">
+        <!-- Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" -->
+        <DisclosureButton as="a" href="#" class="block border-l-4 border-indigo-500 bg-indigo-50 py-2 pl-3 pr-4 text-base font-medium text-indigo-700">
+          Dashboard
+        </DisclosureButton>
+        <DisclosureButton as="a" href="#" class="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700">
+          Team
+        </DisclosureButton>
+        <DisclosureButton as="a" href="#" class="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700">
+          Projects
+        </DisclosureButton>
+        <DisclosureButton as="a" href="#" class="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700">
+          Calendar
+        </DisclosureButton>
+      </div>
+      <!-- <div class="border-t border-gray-200 pb-3 pt-4">
+        <div class="flex items-center px-4">
+          <div class="shrink-0">
+            <img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+          </div>
+          <div class="ml-3">
+            <div class="text-base font-medium text-gray-800">
+              Tom Cook
+            </div>
+            <div class="text-sm font-medium text-gray-500">
+              tom@example.com
+            </div>
+          </div>
+          <button type="button" class="ml-auto shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            <span class="sr-only">View notifications</span>
+            <Icon name="radix-icons:bell" class="h-6 w-6" />
+          </button>
+        </div>
+        <div class="mt-3 space-y-1">
+          <DisclosureButton as="a" href="#" class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800">
+            Your Profile
+          </DisclosureButton>
+          <DisclosureButton as="a" href="#" class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800">
+            Settings
+          </DisclosureButton>
+          <DisclosureButton as="a" href="#" class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800">
+            Sign out
+          </DisclosureButton>
+        </div>
+      </div> -->
+    </DisclosurePanel>
+  </Disclosure>
 </template>

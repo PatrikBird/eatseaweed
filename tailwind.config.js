@@ -6,7 +6,6 @@ module.exports = {
   darkMode: 'class',
   plugins: [
     require('@tailwindcss/typography'),
-    require('flowbite/plugin'),
   ],
   content: [
     './components/**/*.{js,vue,ts}',
