@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     'nuxt-icon',
     '@vueuse/motion/nuxt',
+    '@vueuse/nuxt',
   ],
   app: {
     head: {
